@@ -43,24 +43,11 @@
   background-color: #444;
   color: #fff;
   cursor: pointer;
-  transform: scale(1.00);
 }
 
 .sidebar-container li:last-child {
   border-bottom: none;
 }
-
-.sidebar-container li.logout {
-  background-color: #b20000;
-  color: #fff;
-}
-
-.sidebar-container li.logout:hover {
-  background-color: #8c0000;
-  transform: scale(1.05);
-}
-
-
 
 /*.container{
     background-color: lightgrey;
