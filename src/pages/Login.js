@@ -4,6 +4,7 @@ import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Login.css";
+import GoogleSignInButton from "../components/GoogleSignInButton/GoogleSignInButton";
 
 function Login({ setIsAuth}) {
     const navigate = useNavigate();
@@ -31,9 +32,7 @@ function Login({ setIsAuth}) {
                 <div className="login__text">
                     <h1>Sign in to Personal Finance Tracker</h1>
                 </div>
-                <button className="login_button" type="submit" onClick={handleLogin}>
-                    Sign In With Google
-                </button>
+                <GoogleSignInButton type="submit" onClick={handleLogin}/>
             </div>
         </div>
     );

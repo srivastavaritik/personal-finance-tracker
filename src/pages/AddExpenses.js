@@ -5,9 +5,9 @@ import { auth, db } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
 const AddExpenses = ({ isAuth }) => {
-    const [expenseTitle, setExpenseTitle] = useState("");
-    const [expenseAmount, setExpenseAmount] = useState("");
-    const [expenseDate, setExpenseDate] = useState(new Date().toJSON().slice(0, 10));
+    const [title, setTitle] = useState("");
+    const [amount, setAmount] = useState("");
+    const [date, setDate] = useState(new Date().toJSON().slice(0, 10));
     const [day, setDay] = useState("");
     const [toggleCalendar, setToggleCalendar] = useState(false);
     const navigate = useNavigate();
@@ -23,28 +23,30 @@ const AddExpenses = ({ isAuth }) => {
 
     const handleExpense = async (e) => {
         e.preventDefault();
-        if (expenseTitle === "" || expenseAmount === "" || expenseDate === "") {
+        if (title === "" || amount === "" || date === "") {
             alert("Please fill all the fields");
             return;
         }
         await addDoc(expenseCollectionRef, {
             id: auth.currentUser.uid,
-            title: expenseTitle,
-            amount: expenseAmount,
-            date: expenseDate,
+            title: title,
+            amount: amount,
+            date: date,
+            type:"expense",
+            time: new Date().getTime()
         })
 
-        console.log("Expense added", [expenseTitle, expenseAmount, expenseDate]);
-        setExpenseTitle("");
-        setExpenseAmount("");
-        setExpenseDate("");
+        console.log("Expense added", [title, amount, date]);
+        setTitle("");
+        setAmount("");
+        setDate("");
     }
 
     const handleDay = (e) => {
         const value = e.target.value;
         setDay(value);
         if (value !== "other") {
-            setExpenseDate(new Date().toJSON().slice(0, 10));
+            setDate(new Date().toJSON().slice(0, 10));
             setToggleCalendar(false)
         }
         else {
@@ -60,17 +62,17 @@ const AddExpenses = ({ isAuth }) => {
                 <div className="form-container">
                     <h2>Expenses</h2>
                     <form onSubmit={handleExpense}>
-                        <label htmlFor="expenseTitle">Title</label>
-                        <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} />
-                        <input type="date" className="calendar-input" value={expenseDate} onChange={(e) => setExpenseDate(e.target.value)} />
-                        <label htmlFor="expenseAmount">Amount</label>
-                        <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} />
-                        <label htmlFor="expenseDate">Date</label>
+                        <label htmlFor="title">Title</label>
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <input type="date" className="calendar-input" value={date} onChange={(e) => setDate(e.target.value)} />
+                        <label htmlFor="amount">Amount</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                        <label htmlFor="date">Date</label>
                         <select name="day" id="day" value={day} onChange={handleDay}>
                             <option value={new Date().toJSON().slice(0, 10).replace(/-/g, "/")}>Today</option>
                             <option value="other">Other day</option>
                         </select>
-                        {toggleCalendar && <input type="date" value={expenseDate} onChange={(e) => setExpenseDate(e.target.value)} />}
+                        {toggleCalendar && <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />}
                         <button type="submit">Add Expense</button>
                     </form>
                 </div>

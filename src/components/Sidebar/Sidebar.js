@@ -15,7 +15,7 @@ const Sidebar = ({isAuth, setIsAuth}) => {
         });
     };
   return (
-    <div class='sidebar-container'>
+    <div className='sidebar-container'>
         <h1>Finance Tracker</h1>
         <ul>
             {isAuth && <li onClick={() => navigate('/transactions')}>Transactions</li>}

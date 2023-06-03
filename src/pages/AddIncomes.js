@@ -5,9 +5,9 @@ import { auth, db } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
 const AddIncomes = ({ isAuth }) => {
-    const [incomeTitle, setIncomeTitle] = useState();
-    const [incomeAmount, setIncomeAmount] = useState("");
-    const [incomeDate, setIncomeDate] = useState(new Date().toJSON().slice(0, 10));
+    const [title, setTitle] = useState();
+    const [amount, setAmount] = useState("");
+    const [date, setDate] = useState(new Date().toJSON().slice(0, 10));
     const [day, setDay] = useState("");
     const [toggleCalendar, setToggleCalendar] = useState(false);
     const navigate = useNavigate();
@@ -23,28 +23,30 @@ const AddIncomes = ({ isAuth }) => {
 
     const handleIncomes = async (e) => {
         e.preventDefault();
-        if (incomeTitle === "" || incomeAmount === "" || incomeDate === "") {
+        if (title === "" || amount === "" || date === "") {
             alert("Please fill all the fields");
             return;
         }
         await addDoc(incomeCollectionRef, {
             id: auth.currentUser.uid,
-            title: incomeTitle,
-            amount: incomeAmount,
-            date: incomeDate,
+            title: title,
+            amount: amount,
+            date: date,
+            type:"income",
+            time: new Date().getTime()
         })
 
-        console.log("Income added", [incomeTitle, incomeAmount, incomeDate]);
-        setIncomeTitle("");
-        setIncomeAmount("");
-        setIncomeDate("");
+        console.log("Income added", [title, amount, date]);
+        setTitle("");
+        setAmount("");
+        setDate("");
     }
 
     const handleDay = (e) => {
         const value = e.target.value;
         setDay(value);
         if (value !== "other") {
-            setIncomeDate(new Date().toJSON().slice(0, 10));
+            setDate(new Date().toJSON().slice(0, 10));
             setToggleCalendar(false)
         }
         else {
@@ -60,17 +62,17 @@ const AddIncomes = ({ isAuth }) => {
                 <div className="form-container">
                     <h2>Incomes</h2>
                     <form onSubmit={handleIncomes}>
-                        <label htmlFor="incomeTitle">Title</label>
-                        <input type="text" value={incomeTitle} onChange={(e) => setIncomeTitle(e.target.value)} />
-                        <label htmlFor="incomeAmount">Amount</label>
-                        <input type="number" value={incomeAmount} onChange={(e) => setIncomeAmount(e.target.value)} />
-                        <label htmlFor="incomeDate">Date</label>
-                        <label htmlFor="incomeDate">Date</label>
+                        <label htmlFor="title">Title</label>
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <label htmlFor="amount">Amount</label>
+                        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                        <label htmlFor="date">Date</label>
+                        <label htmlFor="date">Date</label>
                         <select name="day" id="day" value={day} onChange={handleDay}>
                             <option value={new Date().toJSON().slice(0, 10).replace(/-/g, "/")}>Today</option>
                             <option value="other">Other day</option>
                         </select>
-                        {toggleCalendar && <input type="date" value={incomeDate} onChange={(e) => setIncomeDate(e.target.value)} />}
+                        {toggleCalendar && <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />}
                         <button type="submit">Add Income</button>
                     </form>
                 </div>
