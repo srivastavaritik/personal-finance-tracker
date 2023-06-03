@@ -19,7 +19,7 @@ function Login({ setIsAuth}) {
             await signInWithPopup(auth, provider);
             localStorage.setItem("isAuth", true);
             setIsAuth(true);
-            navigate("/home");
+            navigate("/transactions");
         } catch {
             setError("Failed to log in");
         }
@@ -35,16 +35,12 @@ function Login({ setIsAuth}) {
                 />
                 <div className="login__text">
 
-                    <h1>Sign in to PfinTracker</h1>
+                    <h1>Sign in to Personal Finance Tracker</h1>
                 </div>
 
                 <button type="submit" onClick={handleLogin}>
                     Sign In With Google
                 </button>
-                <div className="login__signup">
-                    <h4>Don't have an account?</h4>
-                    {/* <button onClick={handleSignup}>Sign Up</button> */}
-                </div>
             </div>
         </div>
     );

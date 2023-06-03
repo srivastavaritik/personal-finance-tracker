@@ -1,0 +1,23 @@
+.container{
+    background-color: lightgrey;
+    height: 100vh;
+    width: 30%;
+    max-width: 18rem;
+}
+.container h1{
+    font-size: 2rem !important;
+    background-color: black;
+    color: aliceblue;
+}
+.container li{
+    margin: .5rem 0;
+    list-style: none;
+    font-size: 1.5rem;
+    padding: 1rem .5rem;
+    border-bottom: 1px black solid;
+}
+.container li:hover{
+    background-color: black;
+    color: aliceblue;
+    cursor: pointer;
+}   

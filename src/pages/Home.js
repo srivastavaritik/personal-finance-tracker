@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Home.css'
 import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
 
 const Home = ({ isAuth }) => {
@@ -27,14 +27,14 @@ const Home = ({ isAuth }) => {
 
     const handleExpense = async (e) => {
         e.preventDefault();
-        if(expenseTitle === "" || expenseAmount === "" || expenseDate === "") {
+        if (expenseTitle === "" || expenseAmount === "" || expenseDate === "") {
             alert("Please fill all the fields");
             return;
         }
         await addDoc(expenseCollectionRef, {
             id: auth.currentUser.uid,
-            title: expenseTitle, 
-            amount: expenseAmount, 
+            title: expenseTitle,
+            amount: expenseAmount,
             date: expenseDate,
         })
 
@@ -45,7 +45,7 @@ const Home = ({ isAuth }) => {
     }
     const handleIncomes = async (e) => {
         e.preventDefault();
-        if(incomeTitle === "" || incomeAmount === "" || incomeDate === "") {
+        if (incomeTitle === "" || incomeAmount === "" || incomeDate === "") {
             alert("Please fill all the fields");
             return;
         }
@@ -62,13 +62,6 @@ const Home = ({ isAuth }) => {
         setIncomeDate("");
     }
 
-    const handleLogout = () => {
-        // Handle logout logic here
-        auth.signOut();
-        localStorage.setItem("isAuth", false);
-        navigate('/login');
-    };
-
     const handleDay = (e) => {
         const value = e.target.value;
         setDay(value);
@@ -82,19 +75,11 @@ const Home = ({ isAuth }) => {
     }
 
     return (
-        <div>
-            <nav>
-                <ul>
-                    <li>Home</li>
-                    <li>About</li>
-                    <li>Contact</li>
-                    <li onClick={handleLogout}>Logout</li>
-                </ul>
-            </nav>
+        <div className="main-container">
             <main>
-                <h1>Expense Tracker</h1>
                 <h2>Hi {auth.currentUser && auth.currentUser.displayName}</h2>
-                <div>
+                <hr />
+                <div className="form-container">
                     <h2>Expenses</h2>
                     <form onSubmit={handleExpense}>
                         <label htmlFor="expenseTitle">Title</label>
@@ -106,11 +91,11 @@ const Home = ({ isAuth }) => {
                             <option value={new Date().toJSON().slice(0, 10).replace(/-/g, "/")}>Today</option>
                             <option value="other">Other day</option>
                         </select>
-                        {toggleCalendar && <input type="date" value={expenseDate} onChange={(e) => setExpenseDate(e.target.value)} />}
+                        <input type="date" className="calendar-input" value={expenseDate} onChange={(e) => setExpenseDate(e.target.value)} />
                         <button type="submit">Add Expense</button>
                     </form>
                 </div>
-                <div>
+                <div className="form-container">
                     <h2>Incomes</h2>
                     <form onSubmit={handleIncomes}>
                         <label htmlFor="incomeTitle">Title</label>
@@ -122,7 +107,7 @@ const Home = ({ isAuth }) => {
                             <option value={new Date().toJSON().slice(0, 10).replace(/-/g, "/")}>Today</option>
                             <option value="other">Other day</option>
                         </select>
-                        {toggleCalendar && <input type="date" value={incomeDate} onChange={(e) => setIncomeDate(e.target.value)} />}
+                        <input type="date" className="calendar-input" value={incomeDate} onChange={(e) => setIncomeDate(e.target.value)} />
                         <button type="submit">Add Income</button>
                     </form>
                 </div>
@@ -132,3 +117,4 @@ const Home = ({ isAuth }) => {
 };
 
 export default Home;
+
