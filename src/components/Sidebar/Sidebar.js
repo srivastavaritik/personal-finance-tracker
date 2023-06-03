@@ -2,15 +2,17 @@ import React from 'react'
 import './Sidebar.css'
 import { auth } from '../../firebase';
 import { useNavigate } from 'react-router';
+import { signOut } from '@firebase/auth';
 
 const Sidebar = ({isAuth, setIsAuth}) => {
     const navigate = useNavigate();
     const handleLogout = () => {
         // Handle logout logic here
-        // localStorage.setItem("isAuth", false);
-        setIsAuth(false);
-        auth.signOut();
-        navigate('/login');
+        signOut(auth).then(() => {
+            localStorage.clear();
+            setIsAuth(false);
+            navigate("/login");
+        });
     };
   return (
     <div class='container'>
