@@ -3,13 +3,12 @@ import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import "./Login.css";
 
 function Login({ setIsAuth}) {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -29,16 +28,10 @@ function Login({ setIsAuth}) {
     return (
         <div className="login">
             <div className="login__container">
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png"
-                    alt=""
-                />
                 <div className="login__text">
-
                     <h1>Sign in to Personal Finance Tracker</h1>
                 </div>
-
-                <button type="submit" onClick={handleLogin}>
+                <button className="login_button" type="submit" onClick={handleLogin}>
                     Sign In With Google
                 </button>
             </div>
