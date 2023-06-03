@@ -13,7 +13,7 @@ const Sidebar = ({isAuth, setIsAuth}) => {
         navigate('/login');
     };
   return (
-    <div class='container'>
+    <div class='sidebar-container'>
         <h1>Finance Tracker</h1>
         <ul>
             {isAuth && <li onClick={() => navigate('/transactions')}>Transactions</li>}
@@ -26,4 +26,4 @@ const Sidebar = ({isAuth, setIsAuth}) => {
   )
 }
 
-export default Sidebar
+export default Sidebar;
