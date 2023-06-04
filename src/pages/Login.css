@@ -3,19 +3,14 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100vw;
-  background-color: #f2f2f2;
 }
 
 .login__container {
-  background-color: #ffffff;
+  background-color: #f5f5f5;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .login__text {
@@ -24,53 +19,20 @@
 
 .login__text h1 {
   font-size: 2rem;
-  color: black;
 }
 
 .login_button {
+  display: inline-block;
   background-color: #5492f7;
-  color: #c0bbbb;
+  color: #fff;
   font-size: 1.2rem;
   padding: 0.8rem 2rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 1.5rem;
 }
 
 .login_button:hover {
   background-color: #2c5aa5;
-}
-
-@media only screen and (max-width: 600px) {
-  .login__container {
-    padding: 1.5rem;
-  }
-
-  .login__text h1 {
-    font-size: 1.8rem;
-  }
-
-  .login_button {
-    font-size: 1rem;
-    padding: 0.6rem 1.5rem;
-    margin-top: 1rem;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .login__container {
-    padding: 1rem;
-  }
-
-  .login__text h1 {
-    font-size: 1.5rem;
-  }
-
-  .login_button {
-    font-size: 0.9rem;
-    padding: 0.5rem 1.2rem;
-    margin-top: 0.5rem;
-  }
 }
