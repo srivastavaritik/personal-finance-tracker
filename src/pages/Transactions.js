@@ -3,13 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import './Transactions.css';
 import { ColorRing } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 
-const Transactions = () => {
+const Transactions = ({isAuth}) => {
   const [expenses, setExpenses] = useState([]);
   const [incomes, setIncomes] = useState([]);
   const [mergedData, setMergedData] = useState([]);
   const [loading, setLoading] = useState(true); // New loading state
-
+  const navigate = useNavigate();
+useEffect(() => {
+  if(!isAuth){
+    navigate('/login')
+  }
+}, [isAuth, navigate])
   const fetchData = async () => {
     try {
       const expenseQuerySnapshot = await getDocs(query(collection(db, 'expense'), where('id', '==', auth.currentUser.uid)));
