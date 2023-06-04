@@ -63,8 +63,8 @@ const GraphChart = () => {
                 },
                 "bottom": {
                     "scaleType": "time",
+                    "title": "Quarters",
                     "mapsTo": "date",
-                    "title": "Quarters"
                 },
 
             },

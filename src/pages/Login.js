@@ -1,12 +1,12 @@
-// build a login with google component using firebase auth from ../firebase.js
 import { auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Login.css";
 import GoogleSignInButton from "../components/GoogleSignInButton/GoogleSignInButton";
+import { Grid } from "react-loader-spinner";
 
-function Login({ setIsAuth}) {
+function Login({ setIsAuth }) {
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -22,8 +22,9 @@ function Login({ setIsAuth}) {
             navigate("/transactions");
         } catch {
             setError("Failed to log in");
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
@@ -32,11 +33,28 @@ function Login({ setIsAuth}) {
                 <div className="login__text">
                     <h1>Sign in to Personal Finance Tracker</h1>
                 </div>
-                <GoogleSignInButton type="submit" onClick={handleLogin}/>
+                {loading ? (
+                    <div className='loaderCont'>
+                        <div className='loader'>
+                            <Grid
+                                height="80"
+                                width="80"
+                                color="#4fa94d"
+                                ariaLabel="grid-loading"
+                                radius="12.5"
+                                wrapperStyle={{}}
+                                wrapperClass=""
+                                visible={true}
+                            />
+                        </div>
+                    </div> // Render a loader component while logging in
+                ) : (
+                    <GoogleSignInButton type="submit" onClick={handleLogin} />
+                )}
+                {error && <div className="login__error">{error}</div>}
             </div>
         </div>
     );
 }
 
 export default Login;
-
