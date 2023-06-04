@@ -2,11 +2,13 @@ import { collection, getDocs, query, where } from '@firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import './Transactions.css';
+import { ColorRing } from 'react-loader-spinner';
 
 const Transactions = () => {
   const [expenses, setExpenses] = useState([]);
   const [incomes, setIncomes] = useState([]);
   const [mergedData, setMergedData] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
 
   const fetchData = async () => {
     try {
@@ -20,9 +22,11 @@ const Transactions = () => {
       setIncomes(fetchedIncomes);
     } catch (error) {
       console.log('Error fetching data:', error);
+    } finally {
+      setLoading(false); // Set loading to false when data fetching is complete
     }
   };
-console.log(expenses, incomes)
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -42,30 +46,46 @@ console.log(expenses, incomes)
   return (
     <div className="container">
       <h1>Expenses and Incomes</h1>
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mergedData.length === 0 ? (
+      {loading ? (
+        <div className='loaderCont'>
+          <div className='loader'>
+          <ColorRing
+            visible={true}
+            height="120"
+            width="120"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+          />
+            </div>
+        </div>
+      ) : (
+        <table className="data-table">
+          <thead>
             <tr>
-              <td colSpan="3">No data found</td>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Date</th>
             </tr>
-          ) : (
-            mergedData.map((item, index) => (
-              <tr key={index} className={item.type === 'expense' ? 'expense-row' : 'income-row'}>
-                <td>{item.title}</td>
-                <td>{item.amount}</td>
-                <td>{item.date}</td>
+          </thead>
+          <tbody>
+            {mergedData.length === 0 ? (
+              <tr>
+                <td colSpan="3">No data found</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              mergedData.map((item, index) => (
+                <tr key={index} className={item.type === 'expense' ? 'expense-row' : 'income-row'}>
+                  <td>{item.title}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.date}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
