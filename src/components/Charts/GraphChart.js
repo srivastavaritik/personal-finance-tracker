@@ -6,9 +6,6 @@ import "@carbon/styles/css/styles.css";
 import "@carbon/charts/styles.css";
 import { LineChart } from "@carbon/charts-react";
 
-// IBM Plex should either be imported in your project by using Carbon
-// or consumed manually through an import
-// import "./ibm-plex-font.css";
 import './styles.css'
 
 const GraphChart = () => {
