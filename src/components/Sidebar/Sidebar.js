@@ -16,7 +16,10 @@ const Sidebar = ({isAuth, setIsAuth}) => {
     };
   return (
     <div className='sidebar-container'>
-        <h1>Finance Tracker</h1>
+        <div className='hCont'>
+            <span>Finance Tracker</span>
+            <span>H</span>
+        </div>
         <ul>
             {isAuth && <li onClick={() => navigate('/transactions')}>Transactions</li>}
             {isAuth && <li onClick={() => navigate('/add-expense')}>Add Expenses</li>}
