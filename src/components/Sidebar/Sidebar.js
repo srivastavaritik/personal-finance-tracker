@@ -21,6 +21,7 @@ const Sidebar = ({isAuth, setIsAuth}) => {
             {isAuth && <li onClick={() => navigate('/transactions')}>Transactions</li>}
             {isAuth && <li onClick={() => navigate('/add-expense')}>Add Expenses</li>}
             {isAuth && <li onClick={() => navigate('/add-income')}>Add Incomes</li>}
+            {isAuth && <li onClick={() => navigate('/stats')}>Stats</li>}
             {!isAuth && <li onClick={() => navigate('/login')}>Login</li>}
             {isAuth && <li onClick={handleLogout}>Logout</li>}
         </ul>

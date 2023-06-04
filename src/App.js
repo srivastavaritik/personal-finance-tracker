@@ -7,6 +7,8 @@ import Sidebar from './components/Sidebar/Sidebar';
 import AddExpenses from './pages/AddExpenses';
 import AddIncomes from './pages/AddIncomes';
 import Transactions from './pages/Transactions';
+import LineChart from './components/Charts/GraphChart';
+import GraphChart from './components/Charts/GraphChart';
 
 function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
@@ -21,6 +23,7 @@ function App() {
           <Route path='/add-expense' element={<AddExpenses isAuth={isAuth} />} />
           <Route path='/add-income' element={<AddIncomes isAuth={isAuth} />} />
           <Route path='/transactions' element={<Transactions isAuth={isAuth} />} />
+          <Route path='/stats'element={<GraphChart isAuth={isAuth} />} />
         </Routes>
       </div>
     </BrowserRouter>

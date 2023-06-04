@@ -22,7 +22,7 @@ const Transactions = () => {
       console.log('Error fetching data:', error);
     }
   };
-
+console.log(expenses, incomes)
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
