@@ -33,7 +33,7 @@ const AddIncomes = ({ isAuth }) => {
 
         try {
             await addDoc(incomeCollectionRef, {
-                id: auth.currentUser.uid,
+                userId: auth.currentUser.uid,
                 title: title,
                 amount: amount,
                 date: date,
@@ -43,7 +43,7 @@ const AddIncomes = ({ isAuth }) => {
             console.log("Income added", [title, amount, date]);
             setTitle("");
             setAmount("");
-            setDate("");
+            setDate(new Date().toJSON().slice(0, 10));
         } catch (error) {
             console.log("Error adding income:", error);
         } finally {

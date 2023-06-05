@@ -33,7 +33,7 @@ const AddExpenses = ({ isAuth }) => {
 
         try {
             await addDoc(expenseCollectionRef, {
-                id: auth.currentUser.uid,
+                userId: auth.currentUser.uid,
                 title: title,
                 amount: amount,
                 date: date,
@@ -43,7 +43,7 @@ const AddExpenses = ({ isAuth }) => {
             console.log("Expense added", [title, amount, date]);
             setTitle("");
             setAmount("");
-            setDate("");
+            setDate(new Date().toJSON().slice(0, 10));
         } catch (error) {
             console.log("Error adding expense:", error);
         } finally {

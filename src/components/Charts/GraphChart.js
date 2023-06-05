@@ -20,11 +20,11 @@ const GraphChart = () => {
 
     const fetchData = async () => {
         try {
-            const expenseQuerySnapshot = await getDocs(query(collection(db, 'expense'), where('id', '==', auth.currentUser.uid)));
-            const fetchedExpenses = expenseQuerySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            const expenseQuerySnapshot = await getDocs(query(collection(db, 'expense'), where('userId', '==', auth.currentUser.uid)));
+            const fetchedExpenses = expenseQuerySnapshot.docs.map((doc) => ({ userId: doc.userId, ...doc.data() }));
 
-            const incomeQuerySnapshot = await getDocs(query(collection(db, 'income'), where('id', '==', auth.currentUser.uid)));
-            const fetchedIncomes = incomeQuerySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            const incomeQuerySnapshot = await getDocs(query(collection(db, 'income'), where('userId', '==', auth.currentUser.uid)));
+            const fetchedIncomes = incomeQuerySnapshot.docs.map((doc) => ({ userId: doc.userId, ...doc.data() }));
 
             setExpenses(fetchedExpenses);
             setIncomes(fetchedIncomes);
