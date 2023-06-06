@@ -16,7 +16,10 @@ import { useNavigate } from 'react-router-dom';
 const Transactions = ({ isAuth }) => {
   const [expenses, setExpenses] = useState([]);
   const [incomes, setIncomes] = useState([]);
+  const [totalExpenses, setTotalExpenses] = useState(500);
+  const [totalIncomes, setTotalIncomes] = useState(789);
   const [mergedData, setMergedData] = useState([]);
+  const [balanceAmount, setBalanceAmount] = useState();
   const [loading, setLoading] = useState(true);
   const [deletingTransactions, setDeletingTransactions] = useState([]);
   const [editingTransaction, setEditingTransaction] = useState(null);
@@ -65,6 +68,14 @@ const Transactions = ({ isAuth }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         fetchData();
+        let tE=0;
+        let tI=0;
+        expenses.map((expense) => (tE+=Number(expense.amount)));
+        incomes.map((incomes) => tI+=Number(incomes.amount));
+        console.log(Number(tE), Number(tI));
+        setTotalExpenses(tE);
+        setTotalIncomes(tI);
+        setBalanceAmount(tI-tE);
       }
     });
 
@@ -127,7 +138,8 @@ const Transactions = ({ isAuth }) => {
             />
           </div>
         </div>
-      ) : (
+      ) : (<>
+        
         <table className="data-table">
           <thead>
             <tr>
@@ -178,6 +190,12 @@ const Transactions = ({ isAuth }) => {
             )}
           </tbody>
         </table>
+          <div>
+            <div>Total Expense: {totalExpenses}</div>
+            <div>Total Incomes: {totalIncomes}</div>
+            <div>Balance Amount: {balanceAmount}</div>
+          </div>
+        </>
       )}
 
       {modalIsOpen && (
