@@ -6,12 +6,12 @@ import {
   doc,
   deleteDoc,
   updateDoc,
-} from '@firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { auth, db } from '../firebase';
-import './Transactions.css';
-import { ColorRing, FallingLines, Oval } from 'react-loader-spinner';
-import { useNavigate } from 'react-router-dom';
+} from "@firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { auth, db } from "../firebase";
+import "./Transactions.css";
+import { ColorRing, FallingLines, Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 
 const Transactions = ({ isAuth }) => {
   const [expenses, setExpenses] = useState([]);
@@ -29,14 +29,17 @@ const Transactions = ({ isAuth }) => {
 
   useEffect(() => {
     if (!isAuth) {
-      navigate('/login');
+      navigate("/login");
     }
   }, [isAuth, navigate]);
 
   const fetchData = async () => {
     try {
       const expenseQuerySnapshot = await getDocs(
-        query(collection(db, 'expense'), where('userId', '==', auth.currentUser.uid))
+        query(
+          collection(db, "expense"),
+          where("userId", "==", auth.currentUser.uid)
+        )
       );
       const fetchedExpenses = expenseQuerySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -45,7 +48,10 @@ const Transactions = ({ isAuth }) => {
       }));
 
       const incomeQuerySnapshot = await getDocs(
-        query(collection(db, 'income'), where('userId', '==', auth.currentUser.uid))
+        query(
+          collection(db, "income"),
+          where("userId", "==", auth.currentUser.uid)
+        )
       );
       const fetchedIncomes = incomeQuerySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -56,12 +62,11 @@ const Transactions = ({ isAuth }) => {
       setExpenses(fetchedExpenses);
       setIncomes(fetchedIncomes);
     } catch (error) {
-      console.log('Error fetching data:', error);
+      console.log("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -76,12 +81,22 @@ const Transactions = ({ isAuth }) => {
   }, []);
 
   useEffect(() => {
-    setMergedData([...expenses, ...incomes].sort((a, b) => new Date(b.date) - new Date(a.date)));
+    setMergedData(
+      [...expenses, ...incomes].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      )
+    );
   }, [expenses, incomes]);
 
   useEffect(() => {
-    const totalExpenses = expenses.reduce((acc, expense) => acc + Number(expense.amount), 0);
-    const totalIncomes = incomes.reduce((acc, income) => acc + Number(income.amount), 0);
+    const totalExpenses = expenses.reduce(
+      (acc, expense) => acc + Number(expense.amount),
+      0
+    );
+    const totalIncomes = incomes.reduce(
+      (acc, income) => acc + Number(income.amount),
+      0
+    );
     setTotalExpenses(totalExpenses);
     setTotalIncomes(totalIncomes);
 
@@ -97,7 +112,9 @@ const Transactions = ({ isAuth }) => {
     } catch (error) {
       console.log(`Error deleting ${type}:`, error);
     } finally {
-      setDeletingTransactions((prevState) => prevState.filter((transactionId) => transactionId !== id));
+      setDeletingTransactions((prevState) =>
+        prevState.filter((transactionId) => transactionId !== id)
+      );
     }
   };
 
@@ -109,13 +126,16 @@ const Transactions = ({ isAuth }) => {
   const handleSubmit = async () => {
     try {
       setUpdatingTransaction(true);
-      await updateDoc(doc(db, editingTransaction.type, editingTransaction.id), editingTransaction);
+      await updateDoc(
+        doc(db, editingTransaction.type, editingTransaction.id),
+        editingTransaction
+      );
       await fetchData();
-      console.log('Transaction updated');
+      console.log("Transaction updated");
       setEditingTransaction(null);
       setModalIsOpen(false);
     } catch (error) {
-      console.log('Error updating transaction:', error);
+      console.log("Error updating transaction:", error);
     } finally {
       setUpdatingTransaction(false);
     }
@@ -124,6 +144,13 @@ const Transactions = ({ isAuth }) => {
   return (
     <div className="container">
       <h1>Expenses and Incomes</h1>
+      <div>
+        <div className="balance-amount">Balance Amount: {balanceAmount}</div>
+        <div className="partition">
+        <div className="total-income">Total Income: {totalIncomes}</div>
+        <div className="total-expense">Total Expense: {totalExpenses}</div>
+        </div>
+      </div>
       {loading ? (
         <div className="loaderCont">
           <div className="loader">
@@ -134,68 +161,71 @@ const Transactions = ({ isAuth }) => {
               ariaLabel="blocks-loading"
               wrapperStyle={{}}
               wrapperClass="blocks-wrapper"
-              colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
             />
           </div>
         </div>
-      ) : (<>
-
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mergedData.length === 0 ? (
+      ) : (
+        <>
+          <table className="data-table">
+            <thead>
               <tr>
-                <td colSpan="4">No data found</td>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              mergedData.map((item) => (
-                <tr
-                  key={item.id}
-                  className={item.type === 'expense' ? 'expense-row' : 'income-row'}
-                >
-                  <td>{item.title}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    {deletingTransactions.includes(item.id) ? (
-                      <div className="loader">
-                        <FallingLines
-                          color="#4fa94d"
-                          height="20"
-                          width="20"
-                          visible={true}
-                          ariaLabel="falling-lines-loading"
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        <button className="del-btn" onClick={handleDelete(item.type, item.id)}>
-                          Delete
-                        </button>
-                        <button className="edit-btn" onClick={() => handleEdit(item)}>
-                          Edit
-                        </button>
-                      </>
-                    )}
-                  </td>
+            </thead>
+            <tbody>
+              {mergedData.length === 0 ? (
+                <tr>
+                  <td colSpan="4">No data found</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        <div>
-          <div>Total Expense: {totalExpenses}</div>
-          <div>Total Incomes: {totalIncomes}</div>
-          <div>Balance Amount: {balanceAmount}</div>
-        </div>
-      </>
+              ) : (
+                mergedData.map((item) => (
+                  <tr
+                    key={item.id}
+                    className={
+                      item.type === "expense" ? "expense-row" : "income-row"
+                    }
+                  >
+                    <td>{item.title}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.date}</td>
+                    <td>
+                      {deletingTransactions.includes(item.id) ? (
+                        <div className="loader">
+                          <FallingLines
+                            color="#4fa94d"
+                            height="20"
+                            width="20"
+                            visible={true}
+                            ariaLabel="falling-lines-loading"
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <button
+                            className="del-btn"
+                            onClick={handleDelete(item.type, item.id)}
+                          >
+                            Delete
+                          </button>
+                          <button
+                            className="edit-btn"
+                            onClick={() => handleEdit(item)}
+                          >
+                            Edit
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </>
       )}
 
       {modalIsOpen && (
@@ -242,24 +272,27 @@ const Transactions = ({ isAuth }) => {
               />
             </label>
             <button
-              style={{ backgroundColor: '#4fa94d', color: 'white' }}
+              style={{ backgroundColor: "#4fa94d", color: "white" }}
               className="submit-btn"
               disabled={updatingTransaction}
               onClick={handleSubmit}
             >
-              {updatingTransaction ? <Oval
-                height={15}
-                width={15}
-                color="#4fa94d"
-                wrapperStyle={{}}
-                wrapperClass=""
-                visible={true}
-                ariaLabel='oval-loading'
-                secondaryColor="#4fa94d"
-                strokeWidth={2}
-                strokeWidthSecondary={2}
-
-              /> : 'Submit'}
+              {updatingTransaction ? (
+                <Oval
+                  height={15}
+                  width={15}
+                  color="#4fa94d"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                  ariaLabel="oval-loading"
+                  secondaryColor="#4fa94d"
+                  strokeWidth={2}
+                  strokeWidthSecondary={2}
+                />
+              ) : (
+                "Submit"
+              )}
             </button>
           </div>
         </div>
