@@ -54,15 +54,14 @@ const Transactions = ({ isAuth }) => {
       }));
 
       setExpenses(fetchedExpenses);
-      console.log(fetchedExpenses);
       setIncomes(fetchedIncomes);
-      console.log(fetchedIncomes);
     } catch (error) {
       console.log('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {

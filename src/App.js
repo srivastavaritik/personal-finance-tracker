@@ -12,7 +12,6 @@ import GraphChart from './components/Charts/GraphChart';
 
 function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
-
   return (
     <BrowserRouter>
       <div className='App'>

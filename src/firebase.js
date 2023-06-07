@@ -7,13 +7,14 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";// TODO: Add SDKs fo
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA48u99ZoaKgpzSzATslZljVecsXRU8shY",
-    authDomain: "pfintracker.firebaseapp.com",
-    projectId: "pfintracker",
-    storageBucket: "pfintracker.appspot.com",
-    messagingSenderId: "440094980876",
-    appId: "1:440094980876:web:58c1626d728a920bc12729"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
