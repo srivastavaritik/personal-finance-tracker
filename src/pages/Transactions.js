@@ -68,14 +68,6 @@ const Transactions = ({ isAuth }) => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         fetchData();
-        let tE=0;
-        let tI=0;
-        expenses.map((expense) => (tE+=Number(expense.amount)));
-        incomes.map((incomes) => tI+=Number(incomes.amount));
-        console.log(Number(tE), Number(tI));
-        setTotalExpenses(tE);
-        setTotalIncomes(tI);
-        setBalanceAmount(tI-tE);
       }
     });
 
@@ -86,6 +78,15 @@ const Transactions = ({ isAuth }) => {
 
   useEffect(() => {
     setMergedData([...expenses, ...incomes].sort((a, b) => new Date(b.date) - new Date(a.date)));
+  }, [expenses, incomes]);
+
+  useEffect(() => {
+    const totalExpenses = expenses.reduce((acc, expense) => acc + Number(expense.amount), 0);
+    const totalIncomes = incomes.reduce((acc, income) => acc + Number(income.amount), 0);
+    setTotalExpenses(totalExpenses);
+    setTotalIncomes(totalIncomes);
+
+    setBalanceAmount(totalIncomes - totalExpenses);
   }, [expenses, incomes]);
 
   const handleDelete = (type, id) => async () => {
@@ -139,7 +140,7 @@ const Transactions = ({ isAuth }) => {
           </div>
         </div>
       ) : (<>
-        
+
         <table className="data-table">
           <thead>
             <tr>
@@ -190,12 +191,12 @@ const Transactions = ({ isAuth }) => {
             )}
           </tbody>
         </table>
-          <div>
-            <div>Total Expense: {totalExpenses}</div>
-            <div>Total Incomes: {totalIncomes}</div>
-            <div>Balance Amount: {balanceAmount}</div>
-          </div>
-        </>
+        <div>
+          <div>Total Expense: {totalExpenses}</div>
+          <div>Total Incomes: {totalIncomes}</div>
+          <div>Balance Amount: {balanceAmount}</div>
+        </div>
+      </>
       )}
 
       {modalIsOpen && (
@@ -242,7 +243,7 @@ const Transactions = ({ isAuth }) => {
               />
             </label>
             <button
-            style={{backgroundColor: '#4fa94d', color: 'white'}}
+              style={{ backgroundColor: '#4fa94d', color: 'white' }}
               className="submit-btn"
               disabled={updatingTransaction}
               onClick={handleSubmit}
